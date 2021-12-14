@@ -1,7 +1,7 @@
 {
-  "name": "recdipies_app",
+  "name": "backend",
   "version": "0.0.1",
-  "description": "recdipies_app initialised with create-express-typescript-application.",
+  "description": "backend initialised with create-express-typescript-application.",
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
