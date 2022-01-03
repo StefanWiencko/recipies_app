@@ -1,32 +1,33 @@
-import db from "../../db";
 import jwt from "jsonwebtoken";
 import config from "../../config";
+import passport from "passport";
 import { Router } from "express";
 import { AUTH_ENDPOINT } from "../../constants/endpoint";
-import { compareHash } from "../../utils/hashFunctions";
+import { ReqUser } from "../../types";
 
 export const router: Router = Router();
 
-router.post(AUTH_ENDPOINT + "/login", async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  try {
-    const [userFound] = await db.users.find("email", email);
-    if (userFound && compareHash(password, userFound.password)) {
+router.post(
+  AUTH_ENDPOINT + "/login",
+  passport.authenticate("local"),
+  async (req: ReqUser, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
       const token = jwt.sign(
         {
-          userId: userFound.id,
-          email: userFound.email,
-          role: userFound.role,
+          userId: req.user.id,
+          email: req.user.email,
+          role: req.user.role,
         },
         config.jwt.secret as string,
         { expiresIn: "15d" }
       );
-      return res.json(token);
+      res.json(token);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "My code sucks" });
     }
-    res.status(401).json({ message: "Invalid credentials" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "My code sucks" });
   }
-});
+);

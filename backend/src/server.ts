@@ -4,22 +4,19 @@ import helmet from "helmet";
 import cors from "cors";
 import config from "../config.json";
 import passport from "passport";
-import PassportLocal from "passport-local";
 
 import { getFilesWithKeyword } from "./utils/getFilesWithKeyword";
+import { configurePassport } from "./middlewares/passport-strategies.mw";
 
 const app: Express = express();
 
 /************************************************************************************
  *                              Basic Express Middlewares
  ***********************************************************************************/
-passport.use(
-  new PassportLocal.Strategy({ usernameField: "email" }, async () => {})
-);
+configurePassport(app);
 app.set("json spaces", 4);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(passport.initialize());
 
 // Handle logs in console during development
 if (

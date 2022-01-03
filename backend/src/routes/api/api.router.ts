@@ -1,27 +1,26 @@
-import jwt from "jsonwebtoken";
-import config from "../../config";
+import passport from "passport";
 import { Router } from "express";
 import { API_ENDPOINT } from "../../constants/endpoint";
+import { ReqUser } from "../../types";
 
 export const router: Router = Router();
 
-router.get(API_ENDPOINT + "/", (req, res) => {
-  try {
-    const bearerToken = req.headers.authorization?.split(" ");
-    const token =
-      bearerToken && bearerToken[0] === "Bearer" ? bearerToken[1] : null;
-    if (!bearerToken || !token) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
+router.get(
+  API_ENDPOINT + "/",
+  passport.authenticate("jwt"),
+  (req: ReqUser, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+      res.json({
+        message: { message: `Enjoy your Pizza Time ${req.user.email}!` },
+      });
+    } catch (error) {
+      console.log(error);
+      let errorMessage;
+      if (error instanceof Error) errorMessage = error.message;
+      res.status(500).json({ message: "My code sucks", error: errorMessage });
     }
-    const payload: any = jwt.verify(token, config.jwt.secret as string);
-    res.json({
-      message: { message: `Enjoy your Pizza Time ${payload.email}!` },
-    });
-  } catch (error) {
-    console.log(error);
-    let errorMessage;
-    if (error instanceof Error) errorMessage = error.message;
-    res.status(500).json({ message: "My code sucks", error: errorMessage });
   }
-});
+);
