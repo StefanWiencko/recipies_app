@@ -9,13 +9,13 @@ import { Payload } from "../types";
 import config from "../config";
 
 export const configurePassport = (app: Application) => {
-  passport.serializeUser((user: UsersTable, done) => {
+  passport.serializeUser((user: Payload, done) => {
     if (user.password) {
       delete user.password;
     }
     done(null, user);
   });
-  passport.deserializeUser((user: UsersTable, done) => done(null, user));
+  passport.deserializeUser((user: Payload, done) => done(null, user));
   passport.use(
     new PassportLocal.Strategy(
       { usernameField: "email" },
