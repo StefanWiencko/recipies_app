@@ -35,6 +35,7 @@ router.post(
 
 router.post(AUTH_ENDPOINT + "/register", async (req, res) => {
   const newUser = req.body;
+  console.log(newUser);
   try {
     newUser.password = generateHash(newUser.password);
     const resolut = await db.users.insert(newUser);

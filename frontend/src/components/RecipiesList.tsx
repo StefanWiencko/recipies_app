@@ -1,5 +1,5 @@
 import { FC } from "react";
 
-export const Auth: FC = () => {
+export const RecipiesList: FC = () => {
   return <div></div>;
 };
