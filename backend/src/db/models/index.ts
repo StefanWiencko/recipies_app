@@ -5,6 +5,12 @@ export interface UsersTable {
   role?: "admin" | "user";
   created_at?: Date;
 }
+export interface RecipiesTable {
+  id?: number;
+  email?: string;
+  recipie?: string;
+  created_at?: Date;
+}
 
 export interface MYsqlResponse {
   affectedRows: number;

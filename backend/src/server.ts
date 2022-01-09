@@ -3,7 +3,6 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
 import config from "../config.json";
-import passport from "passport";
 
 import { getFilesWithKeyword } from "./utils/getFilesWithKeyword";
 import { configurePassport } from "./middlewares/passport-strategies.mw";

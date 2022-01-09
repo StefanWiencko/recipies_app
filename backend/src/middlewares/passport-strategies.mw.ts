@@ -21,7 +21,7 @@ export const configurePassport = (app: Application) => {
       { usernameField: "email" },
       async (email, password, done) => {
         try {
-          const [userFound] = await db.users.find("email", email);
+          const [userFound] = await db.users.findUser("email", email);
           if (userFound.password && compareHash(password, userFound.password)) {
             delete userFound.password;
             done(null, userFound);

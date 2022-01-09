@@ -1,23 +1,21 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import axios from "axios";
 import constants from "../constants";
 import { loginSchema, registerSchema } from "../utils/Yup_schemas";
 import { AuthFormData } from "../utils/types";
-import { DataContext } from "./DataProvider";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export function Auth() {
+export const Auth = () => {
   const [registerFlag, setRegisterFlag] = useState(false);
-  const { data } = useContext(DataContext);
+  const navigate = useNavigate();
 
   const validationOpt = {
     resolver: yupResolver(registerFlag ? registerSchema : loginSchema),
   };
 
-  const { register, handleSubmit, formState } = useForm(validationOpt);
-
+  const { register, handleSubmit, reset, formState } = useForm(validationOpt);
   const { errors } = formState;
 
   const onFormSubmit = (data: AuthFormData) => {
@@ -26,14 +24,13 @@ export function Auth() {
       .post(constants.baseUrl + endpoint, data)
       .then((res) => {
         localStorage.setItem("recipies_app_jwt", res.data);
+        navigate("/");
+        reset();
       })
       .catch((err) => console.log(err));
   };
-  console.log(localStorage.getItem("recipies_app_jwt") && data);
+  console.log(localStorage.getItem("recipies_app_jwt"));
   const toggleRegisterFlag = () => setRegisterFlag((prev) => !prev);
-  if (localStorage.getItem("recipies_app_jwt") && data) {
-    return <Navigate to="/" />;
-  }
   return (
     <div className="m-4">
       <h2>{registerFlag ? "Register" : "Login"}</h2>
@@ -108,4 +105,4 @@ export function Auth() {
       <button onClick={toggleRegisterFlag}>Register</button>
     </div>
   );
-}
+};

@@ -14,6 +14,8 @@ export const Query = <T = any>(query: string, values?: any) => {
   });
 };
 import users from "./queries/users";
+import recipies from "./queries/recipies";
 export default {
   users,
+  recipies,
 };

@@ -38,7 +38,7 @@ router.post(AUTH_ENDPOINT + "/register", async (req, res) => {
   console.log(newUser);
   try {
     newUser.password = generateHash(newUser.password);
-    const resolut = await db.users.insert(newUser);
+    const resolut = await db.users.insertUser(newUser);
 
     const token = jwt.sign(
       {

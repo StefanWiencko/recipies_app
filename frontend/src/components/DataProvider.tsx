@@ -6,10 +6,11 @@ export const DataContext = createContext<any>(null);
 export const DataProvider: FC = ({ children }) => {
   const [data, setData] = useState<any>(null);
   useEffect(() => {
+    const jwt = localStorage.getItem("recipies_app_jwt");
     axios
       .get(constants.baseUrl + "/api", {
         headers: {
-          Authorization: `Bearer ${constants.jwt}`,
+          Authorization: `Bearer ${jwt}`,
         },
       })
       .then((res) => {

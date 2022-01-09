@@ -8,8 +8,8 @@ const App = () => {
     <DataProvider>
       <div className="App">
         <Routes>
-          <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Home />} />
+          <Route element={<ProtectedRoute redirectTo="/auth" />}>
+            <Route path="*" element={<Home />} />
           </Route>
           <Route path="/auth" element={<Auth />} />
         </Routes>
