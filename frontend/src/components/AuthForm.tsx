@@ -1,16 +1,18 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import constants from "../constants";
 import { loginSchema, registerSchema } from "../utils/Yup_schemas";
 import { AuthFormData } from "../utils/types";
 import { useNavigate } from "react-router-dom";
+import { DataContext } from "./DataProvider";
 
-export const Auth = () => {
+export const AuthForm = () => {
   const [registerFlag, setRegisterFlag] = useState(false);
+  const [duplicateEntry, setDuplicateEntry] = useState<null | boolean>(null);
+  const { setData } = useContext(DataContext);
   const navigate = useNavigate();
-
   const validationOpt = {
     resolver: yupResolver(registerFlag ? registerSchema : loginSchema),
   };
@@ -20,17 +22,27 @@ export const Auth = () => {
 
   const onFormSubmit = (data: AuthFormData) => {
     const endpoint = registerFlag ? "/auth/register" : "/auth/login";
+    if (data.passwordConfirm) {
+      delete data.passwordConfirm;
+    }
     axios
       .post(constants.baseUrl + endpoint, data)
       .then((res) => {
-        localStorage.setItem("recipies_app_jwt", res.data);
+        localStorage.setItem("recipies_app_jwt", res.data.token);
+        setDuplicateEntry(null);
+        setData(res.data.data);
         navigate("/");
         reset();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err.response);
+        if (err.response.status === 409) {
+          setDuplicateEntry(true);
+        }
+      });
   };
-  console.log(localStorage.getItem("recipies_app_jwt"));
   const toggleRegisterFlag = () => setRegisterFlag((prev) => !prev);
+
   return (
     <div className="m-4">
       <h2>{registerFlag ? "Register" : "Login"}</h2>
@@ -102,7 +114,12 @@ export const Auth = () => {
           </button>
         </div>
       </form>
-      <button onClick={toggleRegisterFlag}>Register</button>
+      <div>
+        {duplicateEntry && "You are already registered. Please login instead."}
+      </div>
+      <button onClick={toggleRegisterFlag}>
+        {registerFlag ? "Login" : "Register"}
+      </button>
     </div>
   );
 };

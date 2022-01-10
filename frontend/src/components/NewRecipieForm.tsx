@@ -1,18 +1,19 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import constants from "../constants";
 import { DecodedJwt } from "../utils/types";
+import { DataContext } from "./DataProvider";
 export const NewRecipieForm: FC = () => {
+  const { setData } = useContext(DataContext);
   const [stepCount, setStepCount] = useState(1);
   const {
     register,
     handleSubmit,
     reset,
-    trigger,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
@@ -20,7 +21,6 @@ export const NewRecipieForm: FC = () => {
   const decodedJwt: DecodedJwt = jwt_decode(jwt);
   const arrayOfSteps = [...Array.from({ length: stepCount }, (_, i) => i + 1)];
   const addNewStepHandler = () => setStepCount((prev) => prev + 1);
-  const deleteStepHandler = () => setStepCount((prev) => prev - 1);
   const onFormSubmit = (data: any) => {
     axios
       .post(
@@ -32,11 +32,8 @@ export const NewRecipieForm: FC = () => {
           },
         }
       )
-      .then((res) => {
-        console.log(res);
-        navigate("/");
-        reset();
-      })
+      .then((res) => setData(res.data))
+      .then(() => navigate("/"))
       .catch((err) => console.log(err));
     reset();
   };

@@ -1,5 +1,5 @@
 import { Home } from "./components/Home";
-import { Auth } from "./components/AuthForm";
+import { AuthForm } from "./components/AuthForm";
 import { Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { DataProvider } from "./components/DataProvider";
@@ -11,7 +11,7 @@ const App = () => {
           <Route element={<ProtectedRoute redirectTo="/auth" />}>
             <Route path="*" element={<Home />} />
           </Route>
-          <Route path="/auth" element={<Auth />} />
+          <Route path="/auth" element={<AuthForm />} />
         </Routes>
       </div>
     </DataProvider>

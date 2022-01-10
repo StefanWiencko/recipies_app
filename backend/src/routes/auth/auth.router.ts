@@ -6,6 +6,7 @@ import { AUTH_ENDPOINT } from "../../constants/endpoint";
 import { ReqUser } from "../../types";
 import { generateHash } from "../../utils/hashFunctions";
 import db from "../../db";
+import { stringToJSON } from "../../utils/utilsFunctions";
 export const router: Router = Router();
 
 router.post(
@@ -25,7 +26,9 @@ router.post(
         config.jwt.secret as string,
         { expiresIn: "15d" }
       );
-      res.json(token);
+      const dbSearch = await db.recipies.findAllRecipies();
+      const data = stringToJSON(dbSearch);
+      res.json({ token, data });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "My code sucks" });
@@ -49,9 +52,13 @@ router.post(AUTH_ENDPOINT + "/register", async (req, res) => {
       config.jwt.secret as string,
       { expiresIn: "15d" }
     );
-    res.json(token);
-  } catch (error) {
-    console.log(error);
+    const dbSearch = await db.recipies.findAllRecipies();
+    const data = stringToJSON(dbSearch);
+    res.json({ token, data });
+  } catch (error: any) {
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({ message: error.message });
+    }
     res.status(500).json({ message: "My code sucks" });
   }
 });

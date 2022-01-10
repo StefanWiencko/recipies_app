@@ -9,6 +9,7 @@ export interface RecipiesTable {
   id?: number;
   email?: string;
   recipie?: string;
+  title?: string;
   created_at?: Date;
 }
 
