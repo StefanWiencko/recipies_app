@@ -11,14 +11,14 @@ export interface DecodedJwt {
   role: string;
   userId: number;
 }
-export interface RecipiesInterface {
+export interface Recipies {
   created_at: Date;
   email: string;
   id: number;
   recipie: { [key: string]: string };
   title: string;
 }
-export interface DataInterface {
-  data: RecipiesInterface[] | null;
-  setData: React.Dispatch<React.SetStateAction<RecipiesInterface[] | null>>;
+export interface Data {
+  data: Recipies[] | null;
+  setData: React.Dispatch<React.SetStateAction<Recipies[] | null>>;
 }

@@ -1,0 +1,26 @@
+.recipiesList {
+  list-style: none;
+  padding-top: 6rem;
+  background-color: #fff;
+  height: 100vh;
+}
+.listElement {
+  margin-left: 5rem;
+  margin-bottom: 2rem;
+
+  .link {
+    display: inline-block;
+    text-decoration: none;
+    font-family: "roboto";
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  strong {
+    margin-bottom: 0.5rem;
+  }
+  span {
+    color: #444;
+  }
+}

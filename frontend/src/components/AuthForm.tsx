@@ -44,12 +44,16 @@ export const AuthForm = () => {
   const toggleRegisterFlag = () => setRegisterFlag((prev) => !prev);
 
   return (
-    <div className="m-4">
-      <h2>{registerFlag ? "Register" : "Login"}</h2>
-
+    <div className="formContainer">
       <form onSubmit={handleSubmit(onFormSubmit)}>
-        <div className="form-row">
-          <div className="form-group">
+        <h2>{registerFlag ? "Register" : "Login"}</h2>
+        <div className="">
+          {registerFlag === true && (
+            <button className="ternaryBtn btn" onClick={toggleRegisterFlag}>
+              Back to login
+            </button>
+          )}
+          <div className="formGroup">
             <label>
               <strong>Email</strong>
             </label>
@@ -61,37 +65,37 @@ export const AuthForm = () => {
             <div className="invalid-feedback">{errors.email?.message}</div>
           </div>
           {registerFlag && (
-            <div className="form-group">
+            <div className="formGroup">
               <label>
                 <strong>Role</strong>
               </label>
               <select
                 {...register("role")}
-                className={`form-control ${
-                  errors.passwordConfirm ? "is-invalid" : ""
-                }`}
+                className={`form-control ${errors.role ? "is-invalid" : ""}`}
               >
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
               </select>
-              <div className="invalid-feedback">
-                {errors.passwordConfirm?.message}
-              </div>
+              <div className="invalid-feedback">{errors.role?.message}</div>
             </div>
           )}
-          <div className="form-group">
+          <div className="formGroup">
             <label>
               <strong>Password</strong>
             </label>
             <input
               type="password"
               {...register("password")}
-              className={`form-control ${errors.password ? "is-invalid" : ""}`}
+              className={`form-control ${
+                registerFlag && errors.password ? "is-invalid" : ""
+              }`}
             />
-            <div className="invalid-feedback">{errors.password?.message}</div>
+            <div className="invalid-feedback">
+              {registerFlag && errors.password?.message}
+            </div>
           </div>
           {registerFlag && (
-            <div className="form-group">
+            <div className="formGroup">
               <label>
                 <strong>Confirm Password</strong>
               </label>
@@ -105,21 +109,25 @@ export const AuthForm = () => {
               <div className="invalid-feedback">
                 {errors.passwordConfirm?.message}
               </div>
+              <div className="invalid-feedback">
+                {duplicateEntry &&
+                  "You are already registered. Please login instead."}
+              </div>
             </div>
           )}
         </div>
-        <div className="d-grid">
-          <button type="submit" className="btn btn-dark mt-3">
+        <div className="buttonsContainer">
+          <button type="submit" className="btn mainBtn">
             Send
           </button>
+          {registerFlag === false && (
+            <button className="ternaryBtn btn" onClick={toggleRegisterFlag}>
+              <span>Not registered ?</span>
+              Create an account
+            </button>
+          )}
         </div>
       </form>
-      <div>
-        {duplicateEntry && "You are already registered. Please login instead."}
-      </div>
-      <button onClick={toggleRegisterFlag}>
-        {registerFlag ? "Login" : "Register"}
-      </button>
     </div>
   );
 };

@@ -1,0 +1,27 @@
+.singleRecipie {
+  padding-top: 6rem;
+  padding: 6rem 2rem 0 5rem;
+  background-color: #fff;
+  height: 100vh;
+  width: 100%;
+  strong {
+    font-family: "roboto";
+  }
+  li {
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    list-style: none;
+    font-size: 1.1rem;
+  }
+  p {
+    margin-top: 0.5rem;
+    font-family: "roboto";
+    color: #444;
+  }
+  a {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: #4935d4;
+  }
+}

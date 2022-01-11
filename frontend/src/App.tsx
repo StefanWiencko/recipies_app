@@ -3,6 +3,7 @@ import { AuthForm } from "./components/AuthForm";
 import { Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { DataProvider } from "./components/DataProvider";
+import "./styles/main.scss";
 const App = () => {
   return (
     <DataProvider>

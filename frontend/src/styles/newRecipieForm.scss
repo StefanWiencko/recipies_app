@@ -1,0 +1,46 @@
+.newRecipieWrapper {
+  background-color: #fff;
+  height: 100vh;
+}
+.newRecipeForm {
+  padding-top: 7rem;
+  margin-left: 5rem;
+  max-width: 450px;
+  background-color: #fff;
+  height: 100vh;
+  .inputWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    label {
+      margin-bottom: 0.5rem;
+      font-family: "roboto";
+      font-size: 1.3rem;
+    }
+  }
+  .input {
+    font-size: 1rem;
+    border: 2px solid rgb(68, 68, 68, 0.4);
+    border-radius: 4px;
+  }
+  input {
+    height: 2rem;
+    padding-left: 0.3rem;
+  }
+  textarea {
+    resize: none;
+    height: 100px;
+    padding: 0.3rem;
+  }
+  .buttonWrapper {
+    display: flex;
+    justify-content: space-between;
+    .secondaryBtn {
+      width: 7rem;
+    }
+  }
+  a {
+    font-size: 1.1rem;
+  }
+}

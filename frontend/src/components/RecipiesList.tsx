@@ -1,22 +1,24 @@
 import { FC, useContext } from "react";
 import { Link } from "react-router-dom";
-import { RecipiesInterface } from "../utils/types";
+import { Recipies } from "../utils/types";
 import { DataContext } from "./DataProvider";
 
 export const RecipiesList: FC = () => {
-  const data = useContext(DataContext)?.data;
+  const data: Recipies[] = useContext(DataContext)?.data;
+  const sortedData = data?.sort((a, b) => b.id - a.id);
   return (
     <div>
-      <ul>
-        {data &&
-          data.map((element: RecipiesInterface) => (
-            <li key={element.id}>
-              <Link to={`/recipie?id=${element.id}`}>
+      <ul className="recipiesList">
+        {sortedData?.map((element) => (
+          <li className="listElement" key={element.id}>
+            <Link className="link" to={`/recipie?id=${element.id}`}>
+              <div>
                 <strong>{element.title}</strong>
                 <span>Created by: {element.email} </span>
-              </Link>
-            </li>
-          ))}
+              </div>
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   );
