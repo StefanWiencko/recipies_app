@@ -31,7 +31,7 @@ router.post(
       res.json({ token, data });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "My code sucks" });
+      res.status(500).json({ message: "Problem with /login" });
     }
   }
 );
@@ -42,7 +42,7 @@ router.post(AUTH_ENDPOINT + "/register", async (req, res) => {
   try {
     newUser.password = generateHash(newUser.password);
     const resolut = await db.users.insertUser(newUser);
-
+    console.log("res", resolut);
     const token = jwt.sign(
       {
         userId: resolut.insertId,
@@ -53,12 +53,15 @@ router.post(AUTH_ENDPOINT + "/register", async (req, res) => {
       { expiresIn: "15d" }
     );
     const dbSearch = await db.recipies.findAllRecipies();
+    console.log("db", dbSearch);
     const data = stringToJSON(dbSearch);
+    console.log("data", data);
     res.json({ token, data });
   } catch (error: any) {
     if (error.code === "ER_DUP_ENTRY") {
       return res.status(409).json({ message: error.message });
     }
-    res.status(500).json({ message: "My code sucks" });
+    console.log(error)
+    res.status(500).json({ message: "Problem with /register" });
   }
 });

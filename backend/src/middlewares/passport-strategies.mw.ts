@@ -3,7 +3,6 @@ import PassportLocal from "passport-local";
 import PassportJWT from "passport-jwt";
 import db from "../db";
 import { Application } from "express";
-import { UsersTable } from "../db/models";
 import { compareHash } from "../utils/hashFunctions";
 import { Payload } from "../types";
 import config from "../config";
